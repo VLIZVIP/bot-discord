@@ -13,7 +13,7 @@ dotenv.config();
 const TOKEN = process.env.TOKEN;
 const SELLER_KEY = process.env.SELLER_KEY;
 const CLIENT_ID = process.env.CLIENT_ID;
-const API = "https://keyauth.cc/api/seller";
+const API = "https://keyauth.win/api/seller";
 
 function safeText(t) {
   if (!t) return "Sin detalles";
