@@ -27,55 +27,15 @@ async function keyauth(type, params={}) {
   return await res.json().catch(() => null);
 }
 
+function maskPass(p) {
+  if (!p || p.length <= 1) return p;
+  return p[0] + "*".repeat(p.length - 1);
+}
+
 const commandDefs = [
   ["createuser","Crear usuario",[
     ["usuario","string","Usuario",true],
     ["password","string","Contraseña",true]
-  ]],
-  ["deleteuser","Borrar usuario",[
-    ["usuario","string","Usuario",true]
-  ]],
-  ["userinfo","Ver info usuario",[
-    ["usuario","string","Usuario",true]
-  ]],
-  ["banuser","Banear usuario",[
-    ["usuario","string","Usuario",true]
-  ]],
-  ["unbanuser","Desbanear usuario",[
-    ["usuario","string","Usuario",true]
-  ]],
-  ["extenduser","Extender usuario",[
-    ["usuario","string","Usuario",true],
-    ["dias","string","Días a extender",true]
-  ]],
-  ["resetpass","Reset password",[
-    ["usuario","string","Usuario",true],
-    ["password","string","Nueva pass",true]
-  ]],
-  ["setlevel","Cambiar nivel",[
-    ["usuario","string","Usuario",true],
-    ["nivel","string","Nuevo nivel",true]
-  ]],
-  ["genkey","Generar keys",[
-    ["nivel","string","Nivel",true],
-    ["cantidad","string","Cantidad",true],
-    ["dias","string","Días",true]
-  ]],
-  ["deletekey","Eliminar key",[
-    ["key","string","Key",true]
-  ]],
-  ["keyinfo","Info key",[
-    ["key","string","Key",true]
-  ]],
-  ["usekey","Activar key usuario",[
-    ["usuario","string","Usuario",true],
-    ["key","string","Key",true]
-  ]],
-  ["appinfo","App info",[]],
-  ["subscriptions","Subs info",[]],
-  ["levels","Niveles info",[]],
-  ["webhook","Enviar webhook",[
-    ["mensaje","string","Mensaje",true]
   ]]
 ];
 
@@ -98,6 +58,7 @@ const client=new Client({intents:[GatewayIntentBits.Guilds]});
 
 client.once("ready",()=>console.log("🔥 Bot ON:",client.user.tag));
 
+
 client.on("interactionCreate", async i=>{
   if(!i.isChatInputCommand()) return;
   const name=i.commandName;
@@ -109,75 +70,31 @@ client.on("interactionCreate", async i=>{
   try{
     let r;
     switch(name){
-
       case "createuser":
         r = await keyauth("adduser", {user: g("usuario"), pass: g("password"), sub: "default", expiry: 1});
-        break;
-
-      case "deleteuser":
-        r=await keyauth("deluser",{user:g("usuario")});
-        break;
-
-      case "userinfo":
-        r=await keyauth("userinfo",{user:g("usuario")});
-        break;
-
-      case "banuser":
-        r=await keyauth("banuser",{user:g("usuario")});
-        break;
-
-      case "unbanuser":
-        r=await keyauth("unbanuser",{user:g("usuario")});
-        break;
-
-      case "extenduser":
-        r=await keyauth("extenduser",{user:g("usuario"),expiry:g("dias")});
-        break;
-
-      case "resetpass":
-        r=await keyauth("resetpw",{user:g("usuario"),pass:g("password")});
-        break;
-
-      case "setlevel":
-        r=await keyauth("setlevel",{user:g("usuario"),level:g("nivel")});
-        break;
-
-      case "genkey":
-        r=await keyauth("add",{expiry:g("dias"),level:g("nivel"),amount:g("cantidad"),mask:"*****-*****"});
-        break;
-
-      case "deletekey":
-        r=await keyauth("del",{key:g("key")});
-        break;
-
-      case "keyinfo":
-        r=await keyauth("info",{key:g("key")});
-        break;
-
-      case "usekey":
-        r=await keyauth("use",{user:g("usuario"),key:g("key")});
-        break;
-
-      case "appinfo":
-        r=await keyauth("appinfo",{});
-        break;
-
-      case "subscriptions":
-        r=await keyauth("subscriptions",{});
-        break;
-
-      case "levels":
-        r=await keyauth("levels",{});
-        break;
-
-      case "webhook":
-        r={success:true,message:"Webhook no implementado (requiere config manual)"};
-        break;
+      break;
     }
 
     if(!r) return i.editReply("❌ No hubo respuesta de KeyAuth");
-    if(r.success) i.editReply("✅ Éxito:\n"+safeText(JSON.stringify(r,null,2)));
-    else i.editReply("❌ Error:\n"+safeText(r.message));
+    if (r.success) {
+      const user = g("usuario");
+      const pass = maskPass(g("password"));
+      const avatar = i.user.displayAvatarURL({ dynamic: true, size: 256 });
+      return i.editReply({
+        embeds: [
+          {
+            title: "✅ Ready Menor -> ",
+            description: `**User:** ${user}\n**Pass:** ${pass}`,
+            color: 0xff0000,
+            thumbnail: { url: avatar },
+            footer: {
+              text: `Create By ${i.user.username}`,
+              icon_url: avatar
+            }
+          }
+        ] });
+    }
+    else i.editReply("❌ Error: \n"+safeText(r.message));
 
   }catch(e){
     i.editReply("❌ Error inesperado:\n"+safeText(e.message));
@@ -185,3 +102,5 @@ client.on("interactionCreate", async i=>{
 });
 
 client.login(TOKEN);
+
+//Dev zJhery -> Data 26/11/2025
