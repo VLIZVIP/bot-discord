@@ -89,7 +89,7 @@ client.on("interactionCreate", async i=>{
       const user = g("usuario");
       const pass = maskPass(g("password"));
       const avatar = i.user.displayAvatarURL({ dynamic: true, size: 256 });
-      return i.reply({
+      return i.editReply({
         embeds: [
           {
             title: "✅ Ready Menor -> ÑLOZ | ORG APOS $",
