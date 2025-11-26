@@ -72,7 +72,7 @@ client.on("interactionCreate", async i=>{
   }
 
 
-  await i.reply({content:"👑 ÑLOZ | Espere 1s...",flags:64});
+  await i.reply({content:"👑 ÑLOZ | Espere 1s..."});
 
   const g=s=>i.options.getString(s);
 
