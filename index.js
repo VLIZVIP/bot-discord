@@ -111,7 +111,7 @@ client.on("interactionCreate", async i=>{
     switch(name){
 
       case "createuser":
-        r=await keyauth("adduser",{user:g("usuario"),pass:g("password"),level:1,expiry:1});
+        r = await keyauth("adduser", {user: g("usuario"), pass: g("password"), sub: "default", expiry: 1});
         break;
 
       case "deleteuser":
