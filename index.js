@@ -72,7 +72,7 @@ client.on("interactionCreate", async i=>{
   }
 
 
-  await i.reply({content:"👑 ÑLOZ | ⏳ Espere 1s...",flags:64});
+  await i.reply({content:"👑 ÑLOZ | Espere 1s...",flags:64});
 
   const g=s=>i.options.getString(s);
 
@@ -89,10 +89,10 @@ client.on("interactionCreate", async i=>{
       const user = g("usuario");
       const pass = maskPass(g("password"));
       const avatar = i.user.displayAvatarURL({ dynamic: true, size: 256 });
-      return i.editReply({
+      return i.reply({
         embeds: [
           {
-            title: "✅ Ready Menor -> ÑLOZ AntiCheat👑",
+            title: "✅ Ready Menor -> ÑLOZ | ORG APOS $",
             description: `**User : ** ${user}\n**Pass : ** ${pass}`,
             color: 0xff0000,
             thumbnail: { url: avatar },
