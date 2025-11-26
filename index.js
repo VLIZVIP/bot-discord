@@ -14,6 +14,7 @@ const TOKEN = process.env.TOKEN;
 const SELLER_KEY = process.env.SELLER_KEY;
 const CLIENT_ID = process.env.CLIENT_ID;
 const API = "https://keyauth.win/api/seller";
+const CANAL_AUTH = "1443257175559377049";
 
 function safeText(t) {
   if (!t) return "Sin detalles";
@@ -62,6 +63,14 @@ client.once("ready",()=>console.log("🔥 Bot ON:",client.user.tag));
 client.on("interactionCreate", async i=>{
   if(!i.isChatInputCommand()) return;
   const name=i.commandName;
+
+  if (i.channelId !== CANAL_AUTH) {
+    return i.reply({
+      content: "💢El Bot Funciona en Canal Autorizado -|- Sigues Usando Mal -> Ban🤦‍♂️",
+      ephemeral: true
+    });
+  }
+
 
   await i.reply({content:"⏳ Procesando...",flags:64});
 
