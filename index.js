@@ -17,7 +17,7 @@ const API = "https://keyauth.win/api/seller";
 const CANAL_AUTH = "1443257175559377049";
 
 function safeText(t) {
-  if (!t) return "Sin detalles";
+  if (!t) return "Sin Detalles Consulte Dev 🕒";
   t = String(t);
   return t.length > 1900 ? t.slice(0,1900) + "\n⚠ Recortado" : t;
 }
@@ -66,13 +66,13 @@ client.on("interactionCreate", async i=>{
 
   if (i.channelId !== CANAL_AUTH) {
     return i.reply({
-      content: "💢El Bot Funciona en Canal Autorizado -|- Sigues Usando Mal -> Ban🤦‍♂️",
+      content: "💢El Bot Solo Funciona en Canal #user -|- Sigues Usando Mal -> Ban🤦‍♂️\n No Hagas Spam Por Favor 💕",
       ephemeral: true
     });
   }
 
 
-  await i.reply({content:"⏳ Procesando...",flags:64});
+  await i.reply({content:"👑 ÑLOZ | ⏳ Espere 1s...",flags:64});
 
   const g=s=>i.options.getString(s);
 
@@ -84,7 +84,7 @@ client.on("interactionCreate", async i=>{
       break;
     }
 
-    if(!r) return i.editReply("❌ No hubo respuesta de KeyAuth");
+    if(!r) return i.editReply("❌ No Hubo Respuesta Bots");
     if (r.success) {
       const user = g("usuario");
       const pass = maskPass(g("password"));
@@ -92,8 +92,8 @@ client.on("interactionCreate", async i=>{
       return i.editReply({
         embeds: [
           {
-            title: "✅ Ready Menor -> ",
-            description: `**User:** ${user}\n**Pass:** ${pass}`,
+            title: "✅ Ready Menor -> ÑLOZ AntiCheat👑",
+            description: `**User : ** ${user}\n**Pass : ** ${pass}`,
             color: 0xff0000,
             thumbnail: { url: avatar },
             footer: {
@@ -103,10 +103,10 @@ client.on("interactionCreate", async i=>{
           }
         ] });
     }
-    else i.editReply("❌ Error: \n"+safeText(r.message));
+    else i.editReply("❌ Error -> "+safeText(r.message));
 
   }catch(e){
-    i.editReply("❌ Error inesperado:\n"+safeText(e.message));
+    i.editReply("❌ Error Inesperado:\n"+safeText(e.message));
   }
 });
 
