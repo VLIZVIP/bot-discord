@@ -15,6 +15,7 @@ const SELLER_KEY = process.env.SELLER_KEY;
 const CLIENT_ID = process.env.CLIENT_ID;
 const API = "https://keyauth.win/api/seller";
 const CANAL_AUTH = "1443257175559377049";
+const CANAL_AUTH = "1448794770167169066";
 
 function safeText(t) {
   if (!t) return "Sin Detalles Consulte Dev 🕒";
