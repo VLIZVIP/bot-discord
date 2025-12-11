@@ -14,7 +14,12 @@ const TOKEN = process.env.TOKEN;
 const SELLER_KEY = process.env.SELLER_KEY;
 const CLIENT_ID = process.env.CLIENT_ID;
 const API = "https://keyauth.win/api/seller";
-const CANAL_AUTH = "1443257175559377049";
+
+// 🔥 Canales donde SI funciona:
+const CANALES_PERMITIDOS = [
+  "1443257175559377049", // canal original
+  "1448794770167169066"  // nuevo canal que pediste
+];
 
 function safeText(t) {
   if (!t) return "Sin Detalles Consulte Dev 🕒";
@@ -59,18 +64,16 @@ const client=new Client({intents:[GatewayIntentBits.Guilds]});
 
 client.once("ready",()=>console.log("🔥 Bot ON:",client.user.tag));
 
-
 client.on("interactionCreate", async i=>{
   if(!i.isChatInputCommand()) return;
-  const name=i.commandName;
 
-  if (i.channelId !== CANAL_AUTH) {
+  // 🔥 VALIDAR CANALES
+  if (!CANALES_PERMITIDOS.includes(i.channelId)) {
     return i.reply({
-      content: "💢El Bot Solo Funciona en Canal #user -|- Sigues Usando Mal -> Ban🤦‍♂️\n No Hagas Spam Por Favor 💕",
+      content: "💢El Bot Solo Funciona en los canales autorizados.\nNo hagas spam 💕",
       ephemeral: true
     });
   }
-
 
   await i.reply({content:"👑 ÑLOZ | Espere 1s..."});
 
@@ -78,17 +81,24 @@ client.on("interactionCreate", async i=>{
 
   try{
     let r;
-    switch(name){
+    switch(i.commandName){
       case "createuser":
-        r = await keyauth("adduser", {user: g("usuario"), pass: g("password"), sub: "default", expiry: 1});
+        r = await keyauth("adduser", {
+          user: g("usuario"),
+          pass: g("password"),
+          sub: "default",
+          expiry: 1
+        });
       break;
     }
 
     if(!r) return i.editReply("❌ No Hubo Respuesta Bots");
+
     if (r.success) {
       const user = g("usuario");
       const pass = maskPass(g("password"));
       const avatar = i.user.displayAvatarURL({ dynamic: true, size: 256 });
+
       return i.editReply({
         embeds: [
           {
@@ -101,7 +111,8 @@ client.on("interactionCreate", async i=>{
               icon_url: avatar
             }
           }
-        ] });
+        ]
+      });
     }
     else i.editReply("❌ Error -> "+safeText(r.message));
 
@@ -111,5 +122,3 @@ client.on("interactionCreate", async i=>{
 });
 
 client.login(TOKEN);
-
-//Dev zJhery -> Data 26/11/2025
